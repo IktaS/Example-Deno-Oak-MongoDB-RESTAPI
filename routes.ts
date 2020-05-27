@@ -9,4 +9,8 @@ router.get('/api/shorts', getShorts)
     .put('/api/shorts/:name', updateShort)
     .delete('/api/shorts/:name', deleteShort);
 
+router.get('/',(ctx) => {
+    ctx.response.body = "Welcome screen";
+})
+
 export default router;
