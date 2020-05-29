@@ -84,6 +84,16 @@ const addShort = async (ctx : RouterContext) => {
 // @routes          PUT /api/shorts/:name
 const updateShort = async (ctx : RouterContext) => {
     const name = ctx.params.name;
+
+    if (!ctx.request.hasBody) {
+        ctx.response.status = 400;
+        ctx.response.body = {
+            success: false,
+            msg: 'No data'
+        }
+        return;
+    }
+
     const exist = await shortCollection.findOne({name: name}) ? true : false;
 
     if(!exist){
@@ -95,20 +105,13 @@ const updateShort = async (ctx : RouterContext) => {
         return;
     }
 
-    if (!ctx.request.hasBody) {
-        ctx.response.status = 400;
-        ctx.response.body = {
-            success: false,
-            msg: 'No data'
-        }
-        return;
-    }
-
     const body = await ctx.request.body();
-    const updateData: {link?:string;} = body.value;
+    const {link} = body.value;
     
     await shortCollection.updateOne({name: name}, {
-        $set: updateData
+        $set: {
+            link
+        }
     });
 
     ctx.response.status = 200;
@@ -116,7 +119,7 @@ const updateShort = async (ctx : RouterContext) => {
         success: true,
         data: {
             name,
-            updateData,
+            link,
         }
     }
 }
