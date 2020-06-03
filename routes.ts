@@ -7,7 +7,8 @@ router.get('/api/shorts', getShorts)
     .get('/api/shorts/:name', getShort)
     .post('/api/shorts', addShort)
     .put('/api/shorts/:name', updateShort)
-    .delete('/api/shorts/:name', deleteShort);
+    .delete('/api/shorts/:name', deleteShort)
+    ;
 
 router.get('/',(ctx) => {
     ctx.response.body = "Welcome screen";
